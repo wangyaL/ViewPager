@@ -43,10 +43,10 @@ public class TwoActivity extends Activity {
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
 		
 		//载入图片资源ID
-//		imgIdArray = new int[]{R.drawable.item01, R.drawable.item02, R.drawable.item03, R.drawable.item04,
-//				R.drawable.item05,R.drawable.item06, R.drawable.item07, R.drawable.item08};
+		imgIdArray = new int[]{R.drawable.item01, R.drawable.item02, R.drawable.item03, R.drawable.item04,
+				R.drawable.item05,R.drawable.item06, R.drawable.item07, R.drawable.item08};
 		//用这个滑动的时候就报错
-		imgIdArray = new int[]{R.drawable.item01, R.drawable.item02};
+//		imgIdArray = new int[]{R.drawable.item01, R.drawable.item02};
 		//用这个滑动的时候就没问题了
 //		imgIdArray = new int[]{R.drawable.item01, R.drawable.item02, R.drawable.item01, R.drawable.item02, R.drawable.item01, R.drawable.item02};
 //		imgIdArray = new int[]{R.drawable.item01, R.drawable.item02, R.drawable.item03};
@@ -73,17 +73,21 @@ public class TwoActivity extends Activity {
         tips = new ImageView[pageSize];
         for(int i=0; i<tips.length; i++){
             ImageView imageView = new ImageView(this);
-            imageView.setLayoutParams(new LayoutParams(10,10));
-            imageView.setPadding(5, 0, 5, 0);
+            imageView.setLayoutParams(new LayoutParams(20,20));
+            imageView.setPadding(10, 0, 10, 0);
             tips[i] = imageView;
-            if(i == 0){
-                tips[i].setBackgroundResource(R.drawable.page_indicator_focused);
-            }else{
-                tips[i].setBackgroundResource(R.drawable.page_indicator_unfocused);
-            }
-            
+//            if(i == 0){
+//                tips[i].setImageResource(R.drawable.page_indicator_focused);
+////                tips[i].setBackgroundResource(R.drawable.page_indicator_focused);
+//            }else{
+//                tips[i].setImageResource(R.drawable.page_indicator_unfocused);
+//            }
+            tips[i].setBackgroundResource(R.drawable.dot);
+//            tips[i].setImageResource(R.drawable.dot);
             dotGroup.addView(imageView);
         }
+        currentIndex = 0;
+        tips[currentIndex].setEnabled(false);// 设置为白色，即选中状态
 	}
 	/**
 	 * 初始化图片
@@ -108,8 +112,8 @@ public class TwoActivity extends Activity {
             //这里可以做一些小动作，不如当你滑动到那一页的时候你要加个图标，文字啥的
             // 此方法是页面跳转完后得到调用，arg0是你当前选中的页面的Position（位置编号）。
             // 设置底部小点选中状态
-	        Log.d("===", "==="+arg0);
-	        Log.d("===", "==="+arg0 % mImageViews.length);
+	        Log.d("TwoActivity", "==="+arg0);
+	        Log.d("TwoActivity", "==="+arg0 % mImageViews.length);
             setImageBackground(arg0 % mImageViews.length);
         }
 	    
@@ -133,13 +137,20 @@ public class TwoActivity extends Activity {
 	 * @param selectItems
 	 */
 	private void setImageBackground(int selectItems){
-		for(int i=0; i<tips.length; i++){
-			if(i == selectItems){
-				tips[i].setBackgroundResource(R.drawable.page_indicator_focused);
-			}else{
-				tips[i].setBackgroundResource(R.drawable.page_indicator_unfocused);
-			}
+//		for(int i=0; i<tips.length; i++){
+//			if(i == selectItems){
+//				tips[i].setImageResource(R.drawable.page_indicator_focused);
+//			}else{
+//				tips[i].setImageResource(R.drawable.page_indicator_unfocused);
+//			}
+//		}
+		if (selectItems < 0 || currentIndex == selectItems) {
+			return;
 		}
+		tips[selectItems].setEnabled(false);
+		tips[currentIndex].setEnabled(true);
+
+		currentIndex = selectItems;
 	}
 
 }
